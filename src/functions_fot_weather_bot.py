@@ -1,5 +1,4 @@
-import asyncio
-from .text_localisation import  TEXT
+from .text_localisation import TEXT
 from aiogram import types  # для указание типов
 
 
@@ -14,13 +13,13 @@ async def start(message):
     keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     button_geo = types.KeyboardButton(text=TEXT["Button_text_1"], request_location=True)
     keyboard.add(button_geo)
-    await message.answer(TEXT["Start_massage"], reply_markup=keyboard)
+    await message.answer(TEXT["Start_message"], reply_markup=keyboard)
 
 
 async def location_from_city(message: types.Message):
-    pogoda = message.bot.weather_conektor.weather_by_city(city=message.text)
+    pogoda = message.bot.get("weather_connector").weather_by_city(city=message.text)
     if 'message' not in pogoda:
-        shablon = TEXT["wether_massage"]
+        shablon = TEXT["weather_message"]
         await message.answer(
             text=shablon.format(pogoda, napravlenie_vetra(pogoda),
                                 TEXT[pogoda['weather'][0]['description']]),
@@ -33,9 +32,16 @@ async def location_from_city(message: types.Message):
 
 async def location(message: types.Message):
     if message.location is not None:
-        shablon = TEXT["wether_massage"]
+        shablon = TEXT["weather_message"]
         danie = message.location
-        data = message.bot.weather_conektor.weather_by_locashon(longitude=danie.longitude, latitude=danie.latitude)
+        data = message.bot.get("weather_connector").weather_by_locashon(longitude=danie.longitude,
+                                                                        latitude=danie.latitude)
         await message.answer(
             text=shablon.format(data, napravlenie_vetra(data), TEXT[data['weather'][0]['description']]),
             parse_mode='HTML')
+
+
+def register_handlers(dp):
+    dp.register_message_handler(start, commands=["start"])
+    dp.register_message_handler(location, content_types=['location'])
+    dp.register_message_handler(location_from_city)

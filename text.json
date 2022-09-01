@@ -1,5 +1,5 @@
 {
-    "wether_massage": "<b> Погода в {0[name]}:</b>\nCкорость ветра {0[wind][speed]}км/ч, направление ветра {1} ,{2}({0[weather][0][description]})\n<b>Температура: \n</b>{0[main][temp_min]}-{0[main][temp_max]}℃, ощущается как {0[main][feels_like]}℃ ",
+    "weather_message": "<b> Погода в {0[name]}:</b>\nCкорость ветра {0[wind][speed]}км/ч, направление ветра {1} ,{2}({0[weather][0][description]})\n<b>Температура: \n</b>{0[main][temp_min]}-{0[main][temp_max]}℃, ощущается как {0[main][feels_like]}℃ ",
     "soobshenie_1": "Я не знаю такого города",
     "Button_text_1": "Отправить местоположение",
     "Start_massage": "Поделись местоположением",
