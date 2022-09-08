@@ -1,4 +1,4 @@
-import requests
+import aiohttp
 
 
 class Weather():
@@ -7,23 +7,24 @@ class Weather():
     def __init__(self, key):
         self.key = key
 
-    def request(self, **params):
-        res = requests.get(
-            "https://api.openweathermap.org/data/2.5/weather",
-            params={
-                'APPID': self.key,
-                'units': 'metric',
-                'lang': 'ru',
-                **params
-            }
-        )
-        return res.json()
+    async def request(self, **params):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                    "https://api.openweathermap.org/data/2.5/weather",
+                    params={
+                        'APPID': self.key,
+                        'units': 'metric',
+                        'lang': 'ru',
+                        **params
+                    }
+            ) as asin:
+                return await asin.json()
 
-    def weather_by_locashon(self, longitude: float, latitude: float):
-        return self.request(lon=longitude, lat=latitude)
+    async def weather_by_locashon(self, longitude: float, latitude: float):
+        return await self.request(lon=longitude, lat=latitude)
 
-    def weather_by_city(self, city):
-        return self.request(q=city)
+    async def weather_by_city(self, city):
+        return await self.request(q=city)
 
 
 if __name__ == '__main__':

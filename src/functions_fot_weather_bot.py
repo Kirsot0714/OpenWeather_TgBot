@@ -17,7 +17,7 @@ async def start(message):
 
 
 async def location_from_city(message: types.Message):
-    pogoda = message.bot.get("weather_connector").weather_by_city(city=message.text)
+    pogoda = await message.bot.get("weather_connector").weather_by_city(city=message.text)
     if 'message' not in pogoda:
         shablon = TEXT["weather_message"]
         await message.answer(
@@ -34,7 +34,7 @@ async def location(message: types.Message):
     if message.location is not None:
         shablon = TEXT["weather_message"]
         danie = message.location
-        data = message.bot.get("weather_connector").weather_by_locashon(longitude=danie.longitude,
+        data = await message.bot.get("weather_connector").weather_by_locashon(longitude=danie.longitude,
                                                                         latitude=danie.latitude)
         await message.answer(
             text=shablon.format(data, napravlenie_vetra(data), TEXT[data['weather'][0]['description']]),
